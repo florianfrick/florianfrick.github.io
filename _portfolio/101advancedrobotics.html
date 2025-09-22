@@ -1,0 +1,19 @@
+---
+title: "Autonomous Vehicle Competition Winner"
+excerpt: "Built a robot to navigate and race around a track and adhere to traffic signs. Placed first out of 10 teams. <br/><br/><img src='/images/robot.png'>"
+collection: Portfolio
+---
+
+Full code repository and report available on <a href="https://github.com/florianfrick/Autonomous-Vehicle-Competition-Spring-2025/blob/main/report.pdf">Github</a>. <br><br>
+
+The robot was built using a Raspberry Pi and operated with ROS2.<br><br>
+
+The primary method of navigation used color detection to identify the path and traffic signs and PID based on the lateral distance between the centroid of the path and the center of the camera.
+We detected turns ahead of time by weighing top pixels more heavily for the centroid calculation.
+We ensured reliability and speed by modulating linear spead with respect to angular speed to take corners carefully while traveling quickly on straightaways.
+
+
+<br/><br/>
+<iframe src="https://www.youtube.com/embed/TWMoRhuUKgg"></iframe>
+<br><br>
+

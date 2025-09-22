@@ -1,0 +1,18 @@
+---
+title: "Semantic Segmentation of Arctic Sea Ice Concentration"
+excerpt: "Generated maps of sea ice concentrations from satellite images of the Hudson Bay using the SegFormer transformer model. Improved
+performance over previous U-Net models from 83% to 89% pixel accuracy, demonstrating the possibilities of automatic
+sea ice mapping which will reduce manual labor and ensure these maps remain up-to-date for safer seafaring. <br/><br/><img src='/images/seaice.png'>"
+collection: Portfolio
+---
+
+<a href="https://github.com/florianfrick/Semantic-Segmentation-of-Arctic-Sea-Ice/blob/main/report.pdf">Full report and code repository.</a><br>
+Creating sea ice maps of the Arctic and other polar regions has remained a challenge for both research and industry;
+currently this remains a manual interpretation task by experts in the field. Attempts have been made to automate this
+process using neural networks like CNNs. We expanded on previous work to automate this process by utilizing a colorized
+image dataset of the Hudson Bay in Canada and a SegFormer architecture to perform semantic segmentation prediction.
+Our results indicate that the model performs significantly better than a former attempt: we achieved an overall accuracy
+of 89% and a mean IoU of 0.50 compared to a previous result using a standard U-Net model with 83% and 0.44, respectively.
+While using this method is not accurate enough to reliably implement in industry applications, it is a positive step forward 
+towards automating sea ice mapping.
+<br/><img src='/images/seaice.png'>

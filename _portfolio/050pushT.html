@@ -1,0 +1,38 @@
+---
+title: "Imitation Learning for Robotic Manipulation - PushT"
+excerpt: "Developed a model that maneuvers a robot to push a T-shaped block to a target destination. Implemented an encoder-decoder transformer model with a linear action head from scratch with PyTorch. <br/><br/><img src='/images/pusht.png'>"
+collection: Portfolio
+---
+
+
+
+Developed a model that maneuvers a robot to push a T-shaped block to a target destination. Implemented an encoder-decoder transformer model with a linear action head from scratch with PyTorch.
+
+Future work should explore a diffusion action head, as it is shown to perform better (see Diffusion Policy, Chi).<br><br>
+
+The model achieved successful results with 58M parameters trained over 200 epochs for 48973 seconds.<br><br>
+
+Across 100 test simulations, I averaged 78% completion, with 55 perfect runs. While using 30% fewer parameters, my
+model matches the performance of Diffusion Policy which achieves 78% average score and 59 perfect runs.<br><br>
+
+
+Full code repository available on <a href="https://github.com/florianfrick/pushT">Github</a>. <br><br>
+
+<hr>
+
+These videos demonstrate the model successfully solving the PushT problem on unseen gym environments.
+
+
+<br/><br/><iframe src="https://www.youtube.com/embed/gIHPeBsfaAo"></iframe><br><br>
+
+
+<br/><br/><iframe src="https://www.youtube.com/embed/m6ErDz2-Lc8"></iframe><br><br>
+
+This video illustrates how the model sometimes struggles to complete the task, but ultimately succeeds.
+
+<br/><br/><iframe src="https://www.youtube.com/embed/aaWEV6jSGlw"></iframe><br><br>
+
+
+Finally, the model has room for improvement, as this example demonstrates, where the model gets "stuck" unable to complete the task.
+
+<br/><br/><iframe src="https://www.youtube.com/embed/p6sua3svdFM"></iframe><br><br>
