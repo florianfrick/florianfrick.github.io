@@ -9,11 +9,15 @@ Full code repository and report available on <a href="https://github.com/florian
 The robot was built using a Raspberry Pi and operated with ROS2.<br><br>
 
 The primary method of navigation used color detection to identify the path and traffic signs and PID based on the lateral distance between the centroid of the path and the center of the camera.
-We detected turns ahead of time by weighing top pixels more heavily for the centroid calculation.
-We ensured reliability and speed by modulating linear spead with respect to angular speed to take corners carefully while traveling quickly on straightaways.
+We detected turns ahead of time by weighing top pixels more heavily for the centroid calculation and ensured reliability and speed by modulating linear spead with respect to angular speed to take corners carefully while traveling quickly on straightaways.
 
 
 <br/><br/>
 <iframe src="https://www.youtube.com/embed/TWMoRhuUKgg"></iframe>
 <br><br>
 
+Our robot placed joint first place, with the exact same average time across 3 laps as the other winning team, out of 10 teams in total.
+Other teams often had to pickup and restart their robots, especially struggling with corners, while our solution accounted for some of the hardware limitations by reversing at the correct angle to reliably take corners.
+
+<br><br>
+Finally, our robot adhered to traffic signs indicating to stop, slow down, or speed up, using color detection and contour analysis.
