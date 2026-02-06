@@ -1,0 +1,34 @@
+---
+title: "Real-Time NBA Sentiment Analysis Engine"
+excerpt: "A full-stack interactive dashboard that tracks and visualizes Denver Nuggets fan sentiment using Natural Language Processing. Built with React, AWS AppSync (GraphQL), and DynamoDB. Hosted with AWS Amplify.<br/><br/><img src='/images/nuggets-dashboard-preview.png'>"
+collection: portfolio
+---
+
+<p>
+    This project is an <strong>analytics dashboard</strong> for the Denver Nuggets that scrapes social media threads, analyzes fan sentiment using Gemini, and visualizes the data against boxscore performance to track season trends.
+</p>
+
+<p>
+    Use the below <strong>dashboard</strong>, embedded from AWS Amplify, to select specific games and players to view sentiment breakdowns and explore the correlation between player performance stats and fan sentiment.
+</p>
+
+<h3>Live Dashboard Demo</h3>
+<div style="position: relative; width: 100%; height: 800px; border-radius: 12px; overflow: hidden; border: 1px solid #334155; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); margin-bottom: 2rem;">
+  <iframe 
+    src="https://main.d15pci5w4la9yj.amplifyapp.com/" 
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; background-color: #0f172a;" 
+    allowfullscreen 
+    title="Nuggets Sentiment Dashboard"
+  ></iframe>
+</div>
+<h3>Technical Architecture</h3>
+<ul>
+    <li><strong>Frontend:</strong> React, Vite, TailwindCSS, and Recharts for high-performance data visualization.</li>
+    <li><strong>API Layer:</strong> AWS AppSync (GraphQL) for real-time data fetching and subscription capabilities.</li>
+    <li><strong>Database:</strong> AWS DynamoDB designed with single-table architecture for efficient querying of time-series data.</li>
+    <li><strong>Backend Processing:</strong> Automated Python scripts to scrape Reddit and call gemini API for one-shot sentiment analysis.</li>
+</ul>
+
+<p>
+    Full code repository available on <a href="https://github.com/florianfrick/nuggets-sentiment-dashboard">GitHub</a>.
+</p>
