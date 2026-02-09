@@ -1,24 +1,36 @@
 ---
 title: "Animal Detection with Transformers"
-excerpt: "Bounding box object detection of animal heads from Oxford-IIIT Pet dataset using PyTorch to create a DETR inspired encoder-decoder transformer model. <br/><br/><img src='/images/animals/pug.PNG'>"
+excerpt: "Bounding box object detection of animal heads from Oxford-IIIT Pet dataset using encoder-decoder transformer model built from scratch. <br/><br/><img src='/images/animals/pug.PNG'>"
 collection: Portfolio
 ---
 
 Full code repository available on <a href="https://github.com/florianfrick/Animal-Detection">Github</a>. <br><br>
 
 
-Bounding box object detection of animal heads from Oxford-IIIT Pet dataset using PyTorch to create a DETR inspired encoder-decoder transformer model from scratch.<br><br>
+Wrote and trained an encoder-decoder transformer model from <strong>scratch</strong> in PyTorch for bounding box object detection of animal heads from the Oxford-IIIT Pet.<br><br>
 
 <hr>
 
-With only 11M parameters and 100 epochs of training, the model successfully detects test examples.
+With only 11M parameters and 100 epochs of training, the model successfully detects test examples. There is, however, room for improvement which could be achieved with a larger model and hyperparameter tuning.
 
+<br><br>
 
-<br/><br/><img src='/images/animals/pug.PNG'><br><br>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 0 auto;">
+  
+  <div style="flex: 1 1 calc(50% - 10px); min-width: 150px; text-align: center;">
+    <img src="/images/animals/pug.PNG" style="width: 100%; height: auto; border-radius: 8px;">
+  </div>
 
-<br/><br/><img src='/images/animals/siamese.PNG'><br><br>
+  <div style="flex: 1 1 calc(50% - 10px); min-width: 150px; text-align: center;">
+    <img src="/images/animals/siamese.PNG" style="width: 100%; height: auto; border-radius: 8px;">
+  </div>
 
-<br/><br/><img src='/images/animals/ragdoll.PNG'></iframe><br><br>
+  <div style="flex: 1 1 calc(50% - 10px); min-width: 150px; text-align: center;">
+    <img src="/images/animals/ragdoll.PNG" style="width: 100%; height: auto; border-radius: 8px;">
+  </div>
 
-There is of course, room for improvement, which could likely be achieved with a larger model or hyperparameter tuning.
-<br/><br/><img src='/images/animals/britishshorthair.PNG'></iframe><br><br>
+  <div style="flex: 1 1 calc(50% - 10px); min-width: 150px; text-align: center;">
+    <img src="/images/animals/britishshorthair.PNG" style="width: 100%; height: auto; border-radius: 8px;">
+  </div>
+
+</div>
