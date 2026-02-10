@@ -11,7 +11,7 @@ redirect_from:
 
 
 <div class="responsive-iframe-container">
-  <iframe src="/resume.pdf" style="border: none;">
+  <iframe src="/resume.pdf#zoom=FitH" style="border: none;">
     <p>Your browser does not support iframes, so you can <a href="/files/resume.pdf">download the PDF</a> instead.</p>
   </iframe>
 </div>
