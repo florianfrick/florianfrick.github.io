@@ -131,57 +131,50 @@ redirect_from:
 </div>
 
 <script>
-  (function() {
-    const initCarousel = () => {
-      const wrapper = document.getElementById('aiChatCarousel');
-      if (!wrapper) return; // Guard clause
+  document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('#aiChatCarousel .ai-slide');
+    const prevBtn = document.getElementById('aiPrevBtn');
+    const nextBtn = document.getElementById('aiNextBtn');
+    let currentIndex = 0;
+    let autoPlayInterval;
 
-      const slides = wrapper.querySelectorAll('.ai-slide');
-      const prevBtn = document.getElementById('aiPrevBtn');
-      const nextBtn = document.getElementById('aiNextBtn');
-      let currentIndex = 0;
-      let autoPlayInterval;
-
-      function goToSlide(index) {
-        if (slides.length === 0) return;
-        
-        slides[currentIndex].classList.remove('active');
-        currentIndex = (index + slides.length) % slides.length; // Cleaner wrapping logic
-        slides[currentIndex].classList.add('active');
-      }
-
-      function startAutoPlay() {
-        stopAutoPlay();
-        autoPlayInterval = setInterval(() => goToSlide(currentIndex + 1), 5000);
-      }
-
-      function stopAutoPlay() {
-        clearInterval(autoPlayInterval);
-      }
-
-      nextBtn.addEventListener('click', () => {
-        goToSlide(currentIndex + 1);
-        startAutoPlay();
-      });
-
-      prevBtn.addEventListener('click', () => {
-        goToSlide(currentIndex - 1);
-        startAutoPlay();
-      });
-
-      wrapper.addEventListener('mouseenter', stopAutoPlay);
-      wrapper.addEventListener('mouseleave', startAutoPlay);
-
-      startAutoPlay();
-    };
-
-    // Run immediately if the DOM is already ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initCarousel);
-    } else {
-      initCarousel();
+    /* Function to handle switching slides */
+    function goToSlide(index) {
+      slides[currentIndex].classList.remove('active');
+      currentIndex = index;
+      if (currentIndex >= slides.length) currentIndex = 0;
+      if (currentIndex < 0) currentIndex = slides.length - 1;
+      slides[currentIndex].classList.add('active');
     }
-  })();
+
+    /* Function to move to the next slide automatically */
+    function startAutoPlay() {
+      stopAutoPlay();
+      autoPlayInterval = setInterval(() => {
+        goToSlide(currentIndex + 1);
+      }, 5000);
+    }
+
+    function stopAutoPlay() {
+      clearInterval(autoPlayInterval);
+    }
+
+    nextBtn.addEventListener('click', () => {
+      goToSlide(currentIndex + 1);
+      startAutoPlay(); /* Reset timer */
+    });
+
+    prevBtn.addEventListener('click', () => {
+      goToSlide(currentIndex - 1);
+      startAutoPlay(); /* Reset timer */
+    });
+
+    const carouselWrapper = document.getElementById('aiChatCarousel');
+    carouselWrapper.addEventListener('mouseenter', stopAutoPlay);
+    carouselWrapper.addEventListener('mouseleave', startAutoPlay);
+
+    startAutoPlay();
+  });
 </script>
 
 
