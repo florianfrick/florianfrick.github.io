@@ -131,61 +131,57 @@ redirect_from:
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelectorAll('#aiChatCarousel .ai-slide');
-    const prevBtn = document.getElementById('aiPrevBtn');
-    const nextBtn = document.getElementById('aiNextBtn');
-    let currentIndex = 0;
-    let autoPlayInterval;
+  (function() {
+    const initCarousel = () => {
+      const wrapper = document.getElementById('aiChatCarousel');
+      if (!wrapper) return; // Guard clause
 
-    // Function to handle switching slides
-    function goToSlide(index) {
-      // Remove active class from current
-      slides[currentIndex].classList.remove('active');
-      
-      // Update index
-      currentIndex = index;
-      
-      // Handle array wrapping (looping from end to start and vice versa)
-      if (currentIndex >= slides.length) currentIndex = 0;
-      if (currentIndex < 0) currentIndex = slides.length - 1;
-      
-      // Add active class to new slide
-      slides[currentIndex].classList.add('active');
-    }
+      const slides = wrapper.querySelectorAll('.ai-slide');
+      const prevBtn = document.getElementById('aiPrevBtn');
+      const nextBtn = document.getElementById('aiNextBtn');
+      let currentIndex = 0;
+      let autoPlayInterval;
 
-    // Function to move to the next slide automatically
-    function startAutoPlay() {
-      // Clear any existing timer first to prevent speeding up
-      stopAutoPlay(); 
-      autoPlayInterval = setInterval(() => {
+      function goToSlide(index) {
+        if (slides.length === 0) return;
+        
+        slides[currentIndex].classList.remove('active');
+        currentIndex = (index + slides.length) % slides.length; // Cleaner wrapping logic
+        slides[currentIndex].classList.add('active');
+      }
+
+      function startAutoPlay() {
+        stopAutoPlay();
+        autoPlayInterval = setInterval(() => goToSlide(currentIndex + 1), 5000);
+      }
+
+      function stopAutoPlay() {
+        clearInterval(autoPlayInterval);
+      }
+
+      nextBtn.addEventListener('click', () => {
         goToSlide(currentIndex + 1);
-      }, 5000); // 5 seconds is usually better when giving users time to read
+        startAutoPlay();
+      });
+
+      prevBtn.addEventListener('click', () => {
+        goToSlide(currentIndex - 1);
+        startAutoPlay();
+      });
+
+      wrapper.addEventListener('mouseenter', stopAutoPlay);
+      wrapper.addEventListener('mouseleave', startAutoPlay);
+
+      startAutoPlay();
+    };
+
+    // Run immediately if the DOM is already ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCarousel);
+    } else {
+      initCarousel();
     }
-
-    function stopAutoPlay() {
-      clearInterval(autoPlayInterval);
-    }
-
-    // Event Listeners for Manual Controls
-    nextBtn.addEventListener('click', () => {
-      goToSlide(currentIndex + 1);
-      startAutoPlay(); // Reset timer so it doesn't instantly jump again
-    });
-
-    prevBtn.addEventListener('click', () => {
-      goToSlide(currentIndex - 1);
-      startAutoPlay(); // Reset timer
-    });
-
-    // Optional: Pause auto-play when user hovers their mouse over the image
-    const carouselWrapper = document.getElementById('aiChatCarousel');
-    carouselWrapper.addEventListener('mouseenter', stopAutoPlay);
-    carouselWrapper.addEventListener('mouseleave', startAutoPlay);
-
-    // Initialize the auto-playing timer
-    startAutoPlay();
-  });
+  })();
 </script>
 
 
