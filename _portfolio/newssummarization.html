@@ -12,8 +12,9 @@ and their associated single-sentence summaries.
 
 <br/><br/><img src='/images/xsum.webp'><br><br>
 
-While the results were promising, the low ROGUE Score ultimately demonstrates how difficult natural language processing from scratch is.
-To actually solve real world problems, its best to start with a model pretrained on a huge corpus to understand language and simply finetune it for the desired task.
+With just 53M parameters and 3 epochs of training, the model started to generate feasible sentences, with the vocabulary of main idea present in the outputted summary.
+The actual semantics of the summaries were not accurate, however, which demonstrates how computationally expensive natural language processing is, and illustrates the benefit of pretraining (to create an English generator) before finetuning to a specific task like summarization.
+
 <br><br>
-Nonetheless, the encoder-decoder transformer architecture is incredibly powerful, so I wrote an associated <a href="https://medium.com/correll-lab/building-an-encoder-decoder-for-text-summarization-c66ddf23f466">Medium</a> article to provide the
-<strong>community</strong> with a useful resource to implement the model themselves in PyTorch.
+Nonetheless, the encoder-decoder transformer architecture is incredibly powerful, so I wrote an associated <a href="https://medium.com/correll-lab/building-an-encoder-decoder-for-text-summarization-c66ddf23f466">Medium</a> article
+to provide the <strong>community</strong> with a useful resource to implement the model themselves in PyTorch.
