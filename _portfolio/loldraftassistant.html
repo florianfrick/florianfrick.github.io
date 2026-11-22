@@ -1,0 +1,103 @@
+---
+title: "LoL Draft Assistant (Android App)"
+excerpt: "A draft assistant for League of Legends: novel model architecture trained on pro games and shipped in an Android app alongside a chat agent. <br/><br/><img src='/images/draftassistant/walkthrough-midgame.png'>"
+collection: portfolio
+order: 0
+---
+
+<style>
+  .media-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 0 0 1.5rem;
+  }
+  .media-grid .media-item {
+    max-height: 420px;
+    max-width: 100%;
+    text-align: center;
+  }
+  .media-grid img,
+  .media-grid video {
+    display: block;
+    height: auto;
+    width: auto;
+    max-height: 420px;
+    max-width: 100%;
+    border-radius: 8px;
+  }
+  .media-grid video {
+    border: 1px solid #334155;
+  }
+</style>
+
+<p>
+  Built a Kotlin Android App to suggest live draft moves based on pro league of legends games. An LLM agent is integrated to explain model decisions to users. Many models were built and trained with 47k pro drafts and 400k high-elo solo-queue games. Full code and release notes on <a href="https://github.com/florianfrick/draft-analysis">GitHub</a>.
+</p>
+
+<h3>Tools &amp; languages</h3>
+<ul>
+  <li>Langraph, MCP, PyTorch, Python, SQL, Deepseek API, WandB</li>
+  <li>Cloudflare, Kotlin, Jetpack Compose, ExecuTorch, Docker, Github</li>
+</ul>
+
+<h3>Screenshots</h3>
+<div class="media-grid">
+  <div class="media-item">
+    <img src="/images/draftassistant/chat-predict.png">
+  </div>
+  <div class="media-item">
+    <img src="/images/draftassistant/chat-explain.png">
+  </div>
+  <div class="media-item">
+    <img src="/images/draftassistant/walkthrough-midgame.png">
+  </div>
+  <div class="media-item">
+    <img src="/images/draftassistant/walkthrough-series.png">
+  </div>
+</div>
+
+<h3>Model training experiments</h3>
+<ul>
+  <li><strong>Naive transformer:</strong> Full draft state as uniform input (61 tokens for [state], picks, bans, and fearless bans) achieving 20% top-1 and 54% top-5 on next-move prediction requiring nearly 1B parameters.</li>
+  <li><strong>Siamese set transformer:</strong> A permutation-invariant Set Transformer with shared intra-team self attention, inter-team cross attention, PMA pooling, and a linear prediction head. Trained via masked and causal modeling to achieve 19% top-1 accuracy with a 2.5M parameter model due to the architecture's inductive bias.</li>
+  <li><strong>LLM finetuning:</strong> Finetuned a small open weight model (Qwen3.5-4B) and a frozen siamese model trunk with a linear projector using QLoRA but hardly improved accuracy while dramatically slowing inference. </li>
+  <li><strong>Agent model with MCP and LangGraph tool calling:</strong> Created tools for sandbox draft state manipulation, base model predictors, and SQL querying. As a decision maker, could not surpass base model performance. Thus, the LangGraph version of a chat agent was not ported to the Android app.</li>
+</ul>
+
+<h3>Test and Data Driven Training</h3>
+<ul>
+  <li>Started with an evaluation metric based on desired user experience (next-move prediction), and a relevant, fixed dataset train/val/test split (pro drafts split within patch).</li>
+  <li>Created naive baselines (e.g. frequency lookup table or simple MLP) and continuously built complexity while always fairly comparing against the same metric and data.</li>
+  <li>Experimented with many strategies including set transformers, local LLM finetuning, MCP and LangGraph.</li>
+</ul>
+
+<h3>Android release:</h3>
+<p>
+  A Kotlin/Compose app with bundled assets and models. A Cloudflare worker holds the LLM secret key and applies rate limits to stop user abuse.
+</p>
+
+<h3>Model Architecture Diagrams</h3>
+<div class="media-grid">
+  <div class="media-item">
+    <img src="/images/draftassistant/nextpick_siamese_diagram.png" alt="Pro-only next-pick model: shared SiameseBase encoder, ban context, pooling, policy head and legality mask">
+  </div>
+  <div class="media-item">
+    <img src="/images/draftassistant/naive_transformer_nextpick_diagram.png" alt="Naive transformer: flat 61-token sequence, encoder, state hidden vector, policy head and next-move logits">
+  </div>
+</div>
+
+
+
+
+<h3>Demo: 2026 Worlds Final walkthrough</h3>
+<div class="media-grid">
+  <div class="media-item">
+    <video controls playsinline poster="/images/draftassistant/blg_geng_side_by_side.png">
+      <source src="/images/draftassistant/blg_geng_worlds_2026_side_by_side.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</div>

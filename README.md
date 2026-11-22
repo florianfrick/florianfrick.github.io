@@ -10,4 +10,4 @@ Portfolio
 
 Forked from https://academicpages.github.io/
 
-Host locally with command: bundle exec jeyll serve
+Host locally with command: bundle exec jekyll serve
