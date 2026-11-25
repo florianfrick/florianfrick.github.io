@@ -1,6 +1,6 @@
 ---
-title: "LoL Draft Assistant (Android App)"
-excerpt: "A draft assistant for League of Legends: novel model architecture trained on pro games and shipped in an Android app alongside a chat agent. <br/><br/><img src='/images/draftassistant/chat-predict.png' style='height: 420px; width: auto;'>"
+title: "Professional League of Legends Draft Assistant (Web + Android App)"
+excerpt: "A draft assistant for League of Legends tournaments: novel model architecture & LangGraph orchestration and shipped serverlessly on AWS and in an Android app alongside a chat agent. <br/><br/><img src='/images/draftassistant/webapp.png' style='height: 420px; width: auto;'>"
 collection: portfolio
 order: 0
 ---
@@ -31,19 +31,73 @@ order: 0
   .media-grid video {
     border: 1px solid #334155;
   }
+  .draft-demo {
+    display: block;
+    width: 100%;
+    height: 1180px;
+    margin: 0 0 1.5rem;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    background: #0f1319;
+  }
 </style>
 
 <p>
-  Built a Kotlin Android App to suggest live draft moves based on pro league of legends games. An LLM agent is integrated to explain model decisions to users. Many models were built and trained with 47k pro drafts and 400k high-elo solo-queue games. Full code and release notes on <a href="https://github.com/florianfrick/draft-analysis">GitHub</a>.
+  I built a AWS Web App and a Kotlin Android App to suggest live draft moves with an agent to provide explanation, transparent tool calling, and allow user guiding. I built novel model architectures specifically for this task, finetuned open weight models, and implemented LangGraph agentic tool calling to improve performance and allow user input.
+  The models were written in PyTorch and trained with 47k pro drafts using both masked and causal modelling. Full code and release notes on <a href="https://github.com/florianfrick/draft-analysis">GitHub</a>.
 </p>
 
 <h3>Tools &amp; languages</h3>
 <ul>
-  <li>Langraph, MCP, PyTorch, Python, SQL, Deepseek API, WandB</li>
+  <li>LangGraph, MCP, PyTorch, Python, SQL</li>
   <li>Cloudflare, Kotlin, Jetpack Compose, ExecuTorch, Docker, Github</li>
+  <li>AWS Lambda & ECR, Terraform</li>
 </ul>
 
-<h3>Screenshots</h3>
+<h3>Live web demo</h3>
+<p>
+  Try the embedded browser version below. It is hosted serverlessly on AWS so it takes a few moments to load on a cold start.
+  <a href="https://wdxcco2fjrfqsw6qu3fshe23zi0pbwpt.lambda-url.us-west-2.on.aws/" target="_blank" rel="noopener">Open standalone version</a>.
+</p>
+<iframe class="draft-demo"
+        src="https://wdxcco2fjrfqsw6qu3fshe23zi0pbwpt.lambda-url.us-west-2.on.aws/"
+        title="LoL Draft Assistant live web demo" loading="lazy"></iframe>
+
+
+<p>
+  Predicting professional LoL drafts is an open-ended and difficult task. Firstly, at each step in a 20 step draft, there are almost 200 champions to pick/ban. Secondly, the best strategies (or "meta") change month by month and individual players have unique playstyles.
+  Thus, I prioritized a test and data driven method to training.
+</p>
+
+<h3>Test and Data Driven Training</h3>
+<ul>
+  <li>Started with an evaluation metric based on desired user experience (next-move prediction), and a relevant, fixed dataset train/val/test split (pro drafts split within patch).</li>
+  <li>Created naive baselines (e.g. frequency lookup table or simple MLP) and continuously built complexity while always fairly comparing against the same metric and data.</li>
+  <li>Experimented with many strategies including set transformers, local LLM finetuning, MCP and LangGraph.</li>
+</ul>
+
+<h3>Model training experiments</h3>
+<ul>
+  <li><strong>Naive transformer:</strong> Full draft state as uniform input (61 tokens for [state], picks, bans, and fearless bans) achieving 20% top-1 and 54% top-5 on next-move prediction requiring nearly 1B parameters.</li>
+  <li><strong>Siamese set transformer:</strong> A permutation-invariant Set Transformer with shared intra-team self attention, inter-team cross attention, PMA pooling, and a linear prediction head. Trained via masked and causal modeling to achieve 19% top-1 accuracy with a 2.5M parameter model due to the architecture's inductive bias.</li>
+  <li><strong>LLM finetuning:</strong> Finetuned a small open weight model (Qwen3.5-4B) and a frozen siamese model trunk with a linear projector using QLoRA but hardly improved accuracy while dramatically slowing inference. </li>
+  <li><strong>Agent model with MCP and LangGraph tool calling:</strong> Created tools for sandbox draft state manipulation, base model predictors, and SQL querying. As a decision maker, doesn't surpass base model performance, but improves user experience and guiding.</li>
+</ul>
+
+<h3>Model Architecture Diagrams</h3>
+<div class="media-grid">
+  <div class="media-item">
+    <img src="/images/draftassistant/nextpick_siamese_diagram.png" alt="Pro-only next-pick model: shared SiameseBase encoder, ban context, pooling, policy head and legality mask">
+  </div>
+  <div class="media-item">
+    <img src="/images/draftassistant/naive_transformer_nextpick_diagram.png" alt="Naive transformer: flat 61-token sequence, encoder, state hidden vector, policy head and next-move logits">
+  </div>
+</div>
+
+<h3>Android release:</h3>
+<p>
+  A Kotlin/Compose app with bundled assets and models. A Cloudflare worker holds the LLM secret key and applies rate limits to stop user abuse.
+</p>
 <div class="media-grid">
   <div class="media-item">
     <img src="/images/draftassistant/chat-predict.png">
@@ -59,40 +113,7 @@ order: 0
   </div>
 </div>
 
-<h3>Model training experiments</h3>
-<ul>
-  <li><strong>Naive transformer:</strong> Full draft state as uniform input (61 tokens for [state], picks, bans, and fearless bans) achieving 20% top-1 and 54% top-5 on next-move prediction requiring nearly 1B parameters.</li>
-  <li><strong>Siamese set transformer:</strong> A permutation-invariant Set Transformer with shared intra-team self attention, inter-team cross attention, PMA pooling, and a linear prediction head. Trained via masked and causal modeling to achieve 19% top-1 accuracy with a 2.5M parameter model due to the architecture's inductive bias.</li>
-  <li><strong>LLM finetuning:</strong> Finetuned a small open weight model (Qwen3.5-4B) and a frozen siamese model trunk with a linear projector using QLoRA but hardly improved accuracy while dramatically slowing inference. </li>
-  <li><strong>Agent model with MCP and LangGraph tool calling:</strong> Created tools for sandbox draft state manipulation, base model predictors, and SQL querying. As a decision maker, could not surpass base model performance. Thus, the LangGraph version of a chat agent was not ported to the Android app.</li>
-</ul>
-
-<h3>Test and Data Driven Training</h3>
-<ul>
-  <li>Started with an evaluation metric based on desired user experience (next-move prediction), and a relevant, fixed dataset train/val/test split (pro drafts split within patch).</li>
-  <li>Created naive baselines (e.g. frequency lookup table or simple MLP) and continuously built complexity while always fairly comparing against the same metric and data.</li>
-  <li>Experimented with many strategies including set transformers, local LLM finetuning, MCP and LangGraph.</li>
-</ul>
-
-<h3>Android release:</h3>
-<p>
-  A Kotlin/Compose app with bundled assets and models. A Cloudflare worker holds the LLM secret key and applies rate limits to stop user abuse.
-</p>
-
-<h3>Model Architecture Diagrams</h3>
-<div class="media-grid">
-  <div class="media-item">
-    <img src="/images/draftassistant/nextpick_siamese_diagram.png" alt="Pro-only next-pick model: shared SiameseBase encoder, ban context, pooling, policy head and legality mask">
-  </div>
-  <div class="media-item">
-    <img src="/images/draftassistant/naive_transformer_nextpick_diagram.png" alt="Naive transformer: flat 61-token sequence, encoder, state hidden vector, policy head and next-move logits">
-  </div>
-</div>
-
-
-
-
-<h3>Demo: 2026 Worlds Final walkthrough</h3>
+<h3>Android Demo: 2026 Worlds Final walkthrough (with accuracy)</h3>
 <div class="media-grid">
   <div class="media-item">
     <video controls playsinline poster="/images/draftassistant/blg_geng_side_by_side.png">
